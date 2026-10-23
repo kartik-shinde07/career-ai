@@ -103,7 +103,7 @@ const checkDbConnection = (req, res, next) => {
 };
 
 // api health check endpoint with database status reporting below this code block
-app.get("/api/health", (req, res) => {
+app.get(["/api/health", "/health"], (req, res) => {
   const dbStatusMap = {
     0: "disconnected",
     1: "connected",
@@ -122,17 +122,17 @@ app.get("/api/health", (req, res) => {
   });
 });
 
-// mount authentication routes below this code block
-app.use("/api/auth", checkDbConnection, authRoutes);
+// mount authentication routes supporting both /api/auth and /auth below this code block
+app.use(["/api/auth", "/auth"], checkDbConnection, authRoutes);
 
-// mount user profile routes below this code block
-app.use("/api/users", checkDbConnection, userRoutes);
+// mount user profile routes supporting both /api/users and /users below this code block
+app.use(["/api/users", "/users"], checkDbConnection, userRoutes);
 
-// mount interview management routes below this code block
-app.use("/api/interviews", checkDbConnection, interviewRoutes);
+// mount interview management routes supporting both /api/interviews and /interviews below this code block
+app.use(["/api/interviews", "/interviews"], checkDbConnection, interviewRoutes);
 
-// mount analytics and telemetry routes below this code block
-app.use("/api/analytics", checkDbConnection, analyticsRoutes);
+// mount analytics and telemetry routes supporting both /api/analytics and /analytics below this code block
+app.use(["/api/analytics", "/analytics"], checkDbConnection, analyticsRoutes);
 
 // 404 route not found handler below this code block
 app.use((req, res) => {

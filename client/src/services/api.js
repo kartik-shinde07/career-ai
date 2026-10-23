@@ -7,12 +7,15 @@ export const TOKEN_STORAGE_KEY = 'career_ai_token';
 // session expired custom event identifier below this code block
 export const SESSION_EXPIRED_EVENT = 'career_ai_session_expired';
 
-// base api url read from vite environment or fallback to local express server below this code block
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
+// sanitized base api url ensuring trailing /api is present below this code block
+let rawBase = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
+rawBase = rawBase.replace(/\/+$/, '');
+const baseURL = rawBase.endsWith('/api') ? rawBase : `${rawBase}/api`;
+export const API_BASE_URL = baseURL;
 
 // centralized axios instance configuration below this code block
 export const api = axios.create({
-  baseURL: API_BASE_URL,
+  baseURL,
   headers: {
     'Content-Type': 'application/json'
   },
