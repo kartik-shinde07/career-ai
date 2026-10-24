@@ -4,6 +4,13 @@ const mongoose = require('mongoose');
 // embedded question item subdocument schema definition below this code block (Section 28.3)
 const questionItemSchema = new mongoose.Schema(
   {
+    // unique question identifier below this code block
+    questionId: {
+      type: String,
+      trim: true,
+      default: null
+    },
+
     // 1-based question sequence number within the interview below this code block
     questionNumber: {
       type: Number,
@@ -15,6 +22,27 @@ const questionItemSchema = new mongoose.Schema(
       type: String,
       required: [true, 'Question prompt text is required'],
       trim: true
+    },
+
+    // category classification of the question below this code block
+    questionType: {
+      type: String,
+      trim: true,
+      default: 'conceptual'
+    },
+
+    // target skill or competency being assessed below this code block
+    targetCompetency: {
+      type: String,
+      trim: true,
+      default: 'General'
+    },
+
+    // calibrated difficulty tier for the question below this code block
+    difficultyLevel: {
+      type: String,
+      trim: true,
+      default: 'Intermediate'
     },
 
     // conceptual domain tag for analytics and topic tracking below this code block

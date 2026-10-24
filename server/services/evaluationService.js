@@ -145,7 +145,7 @@ const calculateAuthoritativeScores = (rawEvaluations, questions) => {
 // groq evaluation service rubric prompt and evaluation executor below this code block (EVAL-001 to EVAL-005)
 const evaluateInterviewAnswers = async (interview) => {
   const groq = getGroqClient();
-  const model = process.env.GROQ_MODEL || "openai/gpt-oss-120b";
+  const model = process.env.GROQ_MODEL || "llama-3.1-8b-instant";
 
   const { targetRole, experienceLevel, category, difficulty, questions } =
     interview;
