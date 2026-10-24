@@ -120,6 +120,9 @@ export const ConfigureInterview = () => {
     setIsGenerating(true);
 
     try {
+      // ensure selected question count (e.g. 5, 10, or 15) is reliably resolved and passed in request body below this code block
+      const count = parseInt(data.questionCount || formValues.questionCount, 10) || 5;
+
       // dispatch interview creation request with groq ai generation to backend with extended 60s timeout below this code block
       const response = await api.post(
         '/interviews',
@@ -128,7 +131,7 @@ export const ConfigureInterview = () => {
           experienceLevel: data.experienceLevel,
           category: data.category,
           difficulty: data.difficulty,
-          questionCount: Number(data.questionCount)
+          questionCount: count
         },
         { timeout: 60000 }
       );
@@ -336,12 +339,14 @@ export const ConfigureInterview = () => {
               </div>
             </div>
 
-            {/* question count selector */}
+            {/* question count selector below this code block */}
             <div className="card-surface p-6 space-y-3 shadow-xs">
               <div className="flex items-center gap-2 text-sm font-semibold text-app-text-primary">
                 <HelpCircle className="w-4 h-4 text-app-accent" />
                 <span>5. Question Count</span>
               </div>
+              {/* hidden form input to keep questionCount registered with react-hook-form below this code block */}
+              <input type="hidden" {...register('questionCount', { valueAsNumber: true })} />
               <div className="grid grid-cols-3 gap-2">
                 {QUESTION_COUNTS.map((count) => {
                   const isSelected = formValues.questionCount === count;
@@ -349,7 +354,7 @@ export const ConfigureInterview = () => {
                     <button
                       type="button"
                       key={count}
-                      onClick={() => setValue('questionCount', count, { shouldValidate: true })}
+                      onClick={() => setValue('questionCount', count, { shouldValidate: true, shouldDirty: true, shouldTouch: true })}
                       className={`py-2 px-3 text-xs font-semibold rounded-lg border text-center transition-all ${
                         isSelected
                           ? 'border-app-accent bg-app-accent text-white shadow-xs'
